@@ -84,20 +84,11 @@ if (window.location.href.indexOf('courses')) {
 /*
  * Change favicon of beta environment to green icon
  */
-
 function change_favicon(img) {
-    var favicon = document.querySelector('link[rel="shortcut icon"]');
-    
-    if (!favicon) {
-        favicon = document.createElement('link');
-        favicon.setAttribute('rel', 'shortcut icon');
-        var head = document.querySelector('head');
-        head.appendChild(favicon);
-    }
-    
-    
-    favicon.setAttribute('type', 'image/png');
-    favicon.setAttribute('href', img);
+  var favicon = $('link[rel="shortcut icon"]');
+  if (!favicon) $('head').append('<link rel="shortcut icon">');
+  favicon.attr('type', 'image/png');
+  favicon.attr('href', img);
 }
 
 change_favicon('https://i.imgur.com/DpAI7L4.png');
