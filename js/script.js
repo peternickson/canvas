@@ -31,7 +31,6 @@ if (window.location.href.indexOf('courses')) {
     `
     <select id="calendar_children" onchange="location = this.value;">
       <option class="calendar_child">Select Option</option>
-      <option class="calendar_child" value="/calendar">All Children</option>
     </select>
     `
   );
@@ -46,7 +45,7 @@ if (window.location.href.indexOf('courses')) {
       $('#calendar_children').remove();
     }
 
-    var counter = 2;
+    var counter = 1;
     // Each child...
     for (var child of children) {
       // Add child option
@@ -91,4 +90,4 @@ function change_favicon(img) {
   favicon.attr('href', img);
 }
 
-change_favicon('https://i.imgur.com/DpAI7L4.png');
+// change_favicon('https://i.imgur.com/DpAI7L4.png');
