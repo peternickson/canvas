@@ -24,7 +24,7 @@ if (window.location.href.indexOf('courses')) {
 /*
  * Parent's multiple children
  */
-(function() {
+function addChooseChild() {
 
   // Add initial option selector
   $('#calendar_header').append(
@@ -78,7 +78,11 @@ if (window.location.href.indexOf('courses')) {
   }).fail(err => {
     throw err;
   });
-})();
+};
+
+if (window.location.href.indexOf('calendar')) {
+  addChooseChild();
+}
 
 /*
  * Change favicon of beta environment to green icon
@@ -90,6 +94,6 @@ function changeFavicon(img) {
   favicon.attr('href', img);
 }
 
-if(window.location.hostname.indexOf('beta')) {
+if (window.location.hostname.indexOf('beta')) {
   changeFavicon('https://i.imgur.com/DpAI7L4.png');
 }
