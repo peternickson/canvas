@@ -1,3 +1,5 @@
+/*! MIT License | github.com/kingalfred/canvas */
+
 /*
  * Replace title
  */
