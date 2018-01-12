@@ -27,59 +27,49 @@ if (window.location.href.indexOf('courses')) {
  * Parent's multiple children
  */
 function addChooseChild() {
-
-  // Add initial option selector
-  $('#calendar_header').append(
-    `
-    <select id="calendar_children" onchange="location = this.value;">
-      <option class="calendar_child">Select Option</option>
-    </select>
-    `
-  );
-
-  // Get user's children
+  
   $.ajax({
     method: 'get',
-    url: 'api/v1/users/self/observees?per_page=50',
+    url: '/api/v1/users/self/observees?per_page=50',
     dataType: 'json'
   }).then(children => {
-    if (children.length < 1) {
-      $('#calendar_children').remove();
+    var p = [];
+    for (let child of children) {
+      p.push(new Promise(function(resolve, reject) {
+        $.ajax({
+          method: 'get',
+          url: '/api/v1/users/' + child.id + '/courses?per_page=20',
+          dataType: 'json'
+        }).then(courses => {
+          var listCourses = [];
+          for (var course of courses) {
+            listCourses.push(course.id)
+          }
+          resolve({
+            name: child.name,
+            courses: listCourses
+          });
+        }).fail(err => {
+          reject(err);
+        });
+      }));
     }
-
-    var counter = 1;
-    // Each child...
-    for (var child of children) {
-      // Add child option
-      $('#calendar_children').append(
-        `
-        <option class="calendar_child">${child.name}</option>
-        `
-      );
-      // Get courses of that child
-      $.ajax({
-        method: 'get',
-        url: '/api/v1/users/' + child.id + '/courses?per_page=20',
-        dataType: 'json'
-      }).then(courses => {
-        // Create the calendar link
-        var courseLinks = '/calendar?include_contexts=';
-
-        // Add every course ID to the link
-        for (var course of courses) {
-          courseLinks += `course_${course.id},`;
-        }
-
-        // Add child option
-        $('.calendar_child').eq(counter).attr('value', courseLinks);
-        counter++;
-      }).fail(err => {
-        throw err;
-      });
-    }
+    Promise.all(p).then(res => {
+      $('#calendar_header').append(`
+        <select id="calendar_children" onchange="location = this.value;">
+          <option class="calendar_child">Select Child</option>
+          ${
+            res.map(
+              x => `<option class="calendar_child" value=${x.id}>${x.name}</option>`
+            )
+          }
+        </select>
+      `)
+    })
   }).fail(err => {
     throw err;
-  });
+  })
+  
 };
 
 if (window.location.href.indexOf('calendar')) {
