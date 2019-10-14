@@ -3,8 +3,8 @@
 /*
  * Replace title
  */
-if (document.title === 'Log in to canvas') {
-  document.title = 'King Alfred School Canvas';
+if (document.title === 'Canvas - Instructure') {
+  document.title = 'Canvas - King Alfred School';
 }
 
 /*
